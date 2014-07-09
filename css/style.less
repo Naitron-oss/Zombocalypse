@@ -21,8 +21,7 @@ div {
   height: 300px;
   margin: 100px auto;
   box-shadow: 0 0 10px #333;
-  position: relative;
-  background: #eee;
+  position: relative; background: #eee;
 
   &.killed {
     border: 2px solid red;
@@ -37,7 +36,16 @@ div {
     background-size: 120% !important;
   }
   .weapon {
-
+    //border: 1px solid red;
+    position: absolute;
+    bottom: 10px;
+    left: 190px;
+    background: url('../images/Weapons_V_2_by_Iskaksen.png') no-repeat;
+    &.pistol {
+      width: 77px;
+      height: 31px;
+      background-position: -654px -39px;
+    }
   }
   .health {
     position: absolute;
@@ -47,5 +55,18 @@ div {
     font-size: 30px;
     font-weight: bold;
     color: #999;
+  }
+  .kill-counter {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #999;
+  }
+  .wave-indicator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
   }
 }

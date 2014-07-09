@@ -26,7 +26,6 @@
     this.move();
     var self = this;
     this.direction = this.getRandomRange(1,2) === 1 ? 'left' : 'right';
-    //console.log('DIRECTION: ', this.direction);
     this.interval = setInterval(function() {
       self.move();
     }, 1000);
@@ -55,7 +54,7 @@
 
       if (this.steps >= 100) {
         this.player.damage(this.strength);
-        this.healthElement = 'H: ' + this.health;
+        this.game.updateHealthStatus();
       } else {
         this.steps += 1;
         this.element.style.height = (parseInt(this.element.style.height, 10) + 2) + 'px';
@@ -147,13 +146,24 @@
 
     render: function() {
       this.holder.classList.add('zombie-apocalypse-screen');
+
       this.weaponElement = this.doc.createElement('div');
       this.holder.appendChild(this.weaponElement);
       this.weaponElement.classList.add('weapon', this.player.weapon.className);
+
       this.healthElement = this.doc.createElement('div');
       this.holder.appendChild(this.healthElement);
-      this.healthElement.textContent = 'H: ' + this.player.health;
+      this.healthElement.textContent = 'Health: ' + this.player.health;
       this.healthElement.classList.add('health');
+
+      this.killCounter = this.doc.createElement('div');
+      this.holder.appendChild(this.killCounter);
+      this.killCounter.classList.add('kill-counter');
+      this.killCounter.textContent = 'Kills: ' + this.killed;
+
+      this.waveIndicator = this.doc.createElement('div');
+      this.holder.appendChild(this.waveIndicator);
+      this.waveIndicator.classList.add('wave-indicator');
     },
 
     nextWave: function() {
@@ -166,6 +176,7 @@
         console.log('----------------');
         console.log('Start wave: %i', this.waves);
         console.log('Create %i zombies', this.count);
+        this.indicateWave(this.waves, this.count);
 
 
         if (Math.floor(this.count / 10) > 0) {
@@ -194,10 +205,12 @@
     kill: function( zombie ) {
       var self = this;
       this.killed += 1;
+      this.updateKillCounter();
       this.current.splice(zombie, 1);
       console.log('Current zombies count: ', this.current.length);
       if (this.current.length === 0) {
-        setTimeout(function() { self.nextWave(); }, 3000);
+        this.waitingForNextWave(5000);
+        setTimeout(function() { self.nextWave(); }, 5000);
       }
     },
 
@@ -214,6 +227,31 @@
           //console.log('Unhandled key code: ', event.keyCode);
         }
       };
+    },
+
+    waitingForNextWave: function( delay ) {
+      var self = this;
+
+      var interval = setInterval(function() {
+        delay -= 1000;
+        if (delay === 0) {
+          clearInterval(interval);
+          return;
+        }
+        self.waveIndicator.textContent = "Next wave in " + (delay / 1000);
+      }, 1000);
+    },
+
+    indicateWave: function( wave, zombies ) {
+      this.waveIndicator.textContent = 'Wave: ' + wave + " (zombies: " + zombies + ")";
+    },
+
+    updateHealthStatus: function() {
+      this.healthElement.textContent = 'Health: ' + this.player.health;
+    },
+
+    updateKillCounter: function() {
+      this.killCounter.textContent = 'Kills: ' + this.killed;
     },
 
     pause: function() {

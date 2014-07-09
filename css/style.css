@@ -34,6 +34,17 @@ div {
   background: rgba(0, 0, 0, 0.02);
   background-size: 120% !important;
 }
+.zombie-apocalypse-screen .weapon {
+  position: absolute;
+  bottom: 10px;
+  left: 190px;
+  background: url('../images/Weapons_V_2_by_Iskaksen.png') no-repeat;
+}
+.zombie-apocalypse-screen .weapon.pistol {
+  width: 77px;
+  height: 31px;
+  background-position: -654px -39px;
+}
 .zombie-apocalypse-screen .health {
   position: absolute;
   bottom: 10px;
@@ -41,4 +52,17 @@ div {
   font-size: 30px;
   font-weight: bold;
   color: #999;
+}
+.zombie-apocalypse-screen .kill-counter {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #999;
+}
+.zombie-apocalypse-screen .wave-indicator {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
