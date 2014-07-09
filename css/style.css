@@ -1,6 +1,3 @@
-body {
-  background: #333;
-}
 div {
   -webkit-user-drag: none;
 }
@@ -34,6 +31,15 @@ div {
   background: rgba(0, 0, 0, 0.02);
   background-size: 120% !important;
 }
+.zombie-apocalypse-screen .zombie.zombie-1 {
+  background: url('../images/zombie1.gif') no-repeat center center;
+}
+.zombie-apocalypse-screen .zombie.zombie-2 {
+  background: url('../images/zombie2.gif') no-repeat center center;
+}
+.zombie-apocalypse-screen .zombie.zombie-3 {
+  background: url('../images/zombie3.gif') no-repeat center center;
+}
 .zombie-apocalypse-screen .weapon {
   position: absolute;
   bottom: 10px;
@@ -44,6 +50,11 @@ div {
   width: 77px;
   height: 31px;
   background-position: -654px -39px;
+}
+.zombie-apocalypse-screen .weapon.machine-gun {
+  width: 124px;
+  height: 41px;
+  background-position: -30px -51px;
 }
 .zombie-apocalypse-screen .health {
   position: absolute;

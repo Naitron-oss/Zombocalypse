@@ -3,7 +3,7 @@
 
   var WEAPON_PISTOL = {name:'Pistol',className:'pistol',firepower:40};
   var WEAPON_SHOTGUN = {name:'Shotgun',className:'shotgun',firepower:90};
-  var WEAPON_MACHINE_GUN = {name:'Machine gun',className:'shotgun',firepower:30};
+  var WEAPON_MACHINE_GUN = {name:'Machine gun',className:'machine-gun',firepower:30};
 
 
 
@@ -45,8 +45,7 @@
       this.element.style.zIndex = this.zIndex;
       this.element.style.width = '5px';
       this.element.style.height = '10px';
-      this.element.style.background = 'url("images/zombie' + this.pic + '.gif") no-repeat center center';
-//      this.element.src = "images/zombie" + this.pic + ".gif";
+      this.element.classList.add('zombie-' + this.pic);
     },
 
     move: function() {
@@ -150,6 +149,7 @@
       this.weaponElement = this.doc.createElement('div');
       this.holder.appendChild(this.weaponElement);
       this.weaponElement.classList.add('weapon', this.player.weapon.className);
+      this.weaponElement.onclick = this.changeWeapon.bind(this);
 
       this.healthElement = this.doc.createElement('div');
       this.holder.appendChild(this.healthElement);
@@ -200,6 +200,22 @@
           }
         }
       }
+    },
+
+    changeWeapon: function() {
+      console.log('CHANGE WEAPON');
+      var self = this;
+      this.player.weapon = WEAPON_MACHINE_GUN;
+      this.weaponElement.className = 'weapon ' + this.player.weapon.className;
+      this.doc.onmousedown = function() {
+        self.doc.onmousemove = function( e ) {
+          console.log('SHooting');
+          e.target.click();
+        };
+      };
+      this.doc.onmouseup = function() {
+        self.doc.onmousemove = false;
+      };
     },
 
     kill: function( zombie ) {
