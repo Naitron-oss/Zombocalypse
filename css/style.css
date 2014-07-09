@@ -1,10 +1,44 @@
 body {
-  background: #eee;
+  background: #333;
+}
+div {
+  -webkit-user-drag: none;
 }
 .zombie-apocalypse-screen {
+  -webkit-user-select: none;
+  /* Chrome all / Safari all */
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
+  /* IE 10+ */
+  /* No support for these yet, use at own risk */
+  -o-user-select: none;
+  user-select: none;
+  font-family: Helvetica;
+  cursor: crosshair;
   border: 1px solid #aaa;
   width: 800px;
   height: 300px;
   margin: 100px auto;
-  box-shadow: 0 0 10px #888;
+  box-shadow: 0 0 10px #333;
+  position: relative;
+  background: #eee;
+}
+.zombie-apocalypse-screen.killed {
+  border: 2px solid red;
+  background: red;
+}
+.zombie-apocalypse-screen .zombie {
+  position: absolute;
+  top: 50px;
+  background: rgba(0, 0, 0, 0.02);
+  background-size: 120% !important;
+}
+.zombie-apocalypse-screen .health {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #999;
 }
