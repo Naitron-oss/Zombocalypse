@@ -40,6 +40,18 @@ div {
 .zombie-apocalypse-screen .zombie.zombie-3 {
   background: url('../images/zombie3.gif') no-repeat center center;
 }
+.zombie-apocalypse-screen .zombie.blood-splatter-1 {
+  background: url('../images/blood_splatter_transparency_by_sagacious-d3h1yw6.png') no-repeat center center !important;
+  background-size: 100% !important;
+}
+.zombie-apocalypse-screen .zombie.blood-splatter-2 {
+  background: url('../images/Blood-Splatter-psd45088.png') no-repeat center center !important;
+  background-size: 100% !important;
+}
+.zombie-apocalypse-screen .zombie.blood-splatter-3 {
+  background: url('../images/With_Drops_of_Blood_splatter_illustration_1.png') no-repeat center center !important;
+  background-size: 100% !important;
+}
 .zombie-apocalypse-screen .weapon {
   position: absolute;
   bottom: 10px;

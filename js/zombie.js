@@ -3,7 +3,7 @@
 
   var WEAPON_PISTOL = {name:'Pistol',className:'pistol',firepower:40};
   var WEAPON_SHOTGUN = {name:'Shotgun',className:'shotgun',firepower:90};
-  var WEAPON_MACHINE_GUN = {name:'Machine gun',className:'machine-gun',firepower:30};
+  var WEAPON_MACHINE_GUN = {name:'Machine gun',className:'machine-gun',firepower:20};
 
 
 
@@ -43,8 +43,8 @@
       this.holder.appendChild(this.element);
       this.element.style.left = this.getRandomRange(100, 600) + '%';
       this.element.style.zIndex = this.zIndex;
-      this.element.style.width = '5px';
-      this.element.style.height = '10px';
+      this.element.style.width = '8px';
+      this.element.style.height = '16px';
       this.element.classList.add('zombie-' + this.pic);
     },
 
@@ -70,8 +70,9 @@
 
     },
 
-    damage: function( damage ) {
-      this.health -= damage;
+    damage: function() {
+      //console.log('DAMAGE: ', this.game.player.weapon.firepower);
+      this.health -= this.game.player.weapon.firepower;
       //console.log('Damage: %i, health: %i', damage, this.health);
       this.updateProgress();
       if (this.health <= 0) {
@@ -80,13 +81,19 @@
     },
 
     bind: function() {
-      this.element.onclick = this.damage.bind(this, this.player.firepower);
+      this.element.onclick = this.damage.bind(this);
     },
 
     die: function() {
+      var self = this;
+      var pic = this.getRandomRange(1,3);
+      this.element.classList.add('blood-splatter-' + pic);
       clearInterval(this.interval);
       this.game.kill(this);
-      this.holder.removeChild(this.element);
+      this.element.onclick = null;
+      setTimeout(function() {
+        self.holder.removeChild(self.element);
+      }, 300);
     }
   };
 
@@ -100,7 +107,6 @@
     this.health = 100;
     this.weapon = config.weapon;
     this.game = config.game;
-    this.firepower = this.weapon.firepower;
     this.init();
   }
   Player.prototype = {
@@ -148,7 +154,8 @@
 
       this.weaponElement = this.doc.createElement('div');
       this.holder.appendChild(this.weaponElement);
-      this.weaponElement.classList.add('weapon', this.player.weapon.className);
+      this.weaponElement.classList.add('weapon');
+      this.weaponElement.classList.add(this.player.weapon.className);
       this.weaponElement.onclick = this.changeWeapon.bind(this);
 
       this.healthElement = this.doc.createElement('div');
@@ -177,28 +184,38 @@
         console.log('Start wave: %i', this.waves);
         console.log('Create %i zombies', this.count);
         this.indicateWave(this.waves, this.count);
+        var delay = 2000;
+        var toCreate = this.count;
 
 
-        if (Math.floor(this.count / 10) > 0) {
-          console.log('HERE');
-          var temp = Math.floor(this.count / 10);
-          var count = 0;
-          interval = setInterval(function() {
-            for (i = 0; i < temp; i += 1, count += 1) {
-              if (self.count === count) {
-                clearInterval(interval);
+        // put up to 20 zombies
+        // put max 200
+
+        interval = setInterval(function() {
+          if (self.current.length >= 400) {
+            // ..
+            console.info('Skip: 400 or more zombies on screen currently');
+          } else if (toCreate === 0 && self.current.length === 0) {
+            clearInterval(interval);
+            self.waitingForNextWave(5000);
+            setTimeout(function() { self.nextWave(); }, 5000);
+          } else if (toCreate === 0) {
+            // .. no more zombies to create, skip
+          } else {
+
+            console.log('blahdw');
+            // .. draw 10 zombies then repeat after 2 minutes
+
+            for (i = 0; toCreate > 0; toCreate -= 1, i += 1) {
+              if (self.current.length >= 400 || i > 10) {
                 break;
               }
               self.zIndex -= 1;
               self.current.push(new Zombie({holder:self.holder, player:self.player, game:self, zIndex:self.zIndex}));
             }
-          }, 2000);
-        } else {
-          for (i = 0; i < self.count; i += 1) {
-            self.zIndex -= 1;
-            self.current.push(new Zombie({holder:self.holder, player:self.player, game:self, zIndex:self.zIndex}));
+
           }
-        }
+        }, delay);
       }
     },
 
@@ -206,10 +223,11 @@
       console.log('CHANGE WEAPON');
       var self = this;
       this.player.weapon = WEAPON_MACHINE_GUN;
+      //console.log('PLAYER CHANGED WEAPON: ', this.player);
       this.weaponElement.className = 'weapon ' + this.player.weapon.className;
       this.doc.onmousedown = function() {
         self.doc.onmousemove = function( e ) {
-          console.log('SHooting');
+          //console.log('SHooting');
           e.target.click();
         };
       };
@@ -224,10 +242,10 @@
       this.updateKillCounter();
       this.current.splice(zombie, 1);
       console.log('Current zombies count: ', this.current.length);
-      if (this.current.length === 0) {
-        this.waitingForNextWave(5000);
-        setTimeout(function() { self.nextWave(); }, 5000);
-      }
+//      if (this.current.length === 0) {
+//        this.waitingForNextWave(5000);
+//        setTimeout(function() { self.nextWave(); }, 5000);
+//      }
     },
 
     bind: function() {
