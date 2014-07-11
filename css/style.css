@@ -13,13 +13,86 @@ div {
   user-select: none;
   font-family: Helvetica;
   cursor: crosshair;
-  border: 1px solid #aaa;
+  margin: 100px auto;
+  position: relative;
+  width: 920px;
+}
+.zombie-apocalypse-screen #scene {
+  overflow: hidden;
   width: 800px;
   height: 300px;
-  margin: 100px auto;
-  box-shadow: 0 0 10px #333;
+  box-shadow: inset 0 0 10px #333;
   position: relative;
   background: #eee;
+  border: 1px solid #aaa;
+  float: left;
+}
+.zombie-apocalypse-screen #scene #gunfire {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  opacity: 0.5;
+  background: url('../images/4A8_Fireball1_GD.png') no-repeat center center;
+  background-size: 100%;
+  display: none;
+}
+.zombie-apocalypse-screen #stats {
+  position: absolute;
+  top: 330px;
+}
+.zombie-apocalypse-screen #stats #kills-count {
+  position: absolute;
+  bottom: 0px;
+  left: 717px;
+  width: 100px;
+}
+.zombie-apocalypse-screen #weapons {
+  position: relative;
+  vertical-align: top;
+  float: right;
+  width: 100px;
+}
+.zombie-apocalypse-screen #weapons .weapon {
+  position: absolute;
+  background: url('../images/Weapons_V_2_by_Iskaksen.png') no-repeat;
+}
+.zombie-apocalypse-screen #weapons .weapon.active {
+  background-color: lightgreen !important;
+}
+.zombie-apocalypse-screen #weapons .weapon.pistol {
+  width: 77px;
+  height: 31px;
+  background-position: -654px -39px;
+  top: 20px;
+  left: 2px;
+}
+.zombie-apocalypse-screen #weapons .weapon.shotgun {
+  width: 84px;
+  height: 32px;
+  background-position: -238px -479px;
+  top: 62px;
+  left: 0px;
+}
+.zombie-apocalypse-screen #weapons .weapon.machine-gun {
+  width: 124px;
+  height: 41px;
+  background-position: -320px -153px;
+  top: 109px;
+  left: -2px;
+}
+.zombie-apocalypse-screen #weapons .weapon.rifle {
+  width: 149px;
+  height: 41px;
+  background-position: -454px -232px;
+  top: 167px;
+  left: -11px;
+}
+.zombie-apocalypse-screen #weapons .weapon.bazooka {
+  width: 124px;
+  height: 41px;
+  background-position: -194px -268px;
+  top: 224px;
+  left: -5px;
 }
 .zombie-apocalypse-screen.killed {
   border: 2px solid red;
@@ -29,7 +102,7 @@ div {
   position: absolute;
   top: 50px;
   background: rgba(0, 0, 0, 0.02);
-  background-size: 120% !important;
+  background-size: 100% !important;
 }
 .zombie-apocalypse-screen .zombie.zombie-1 {
   background: url('../images/zombie1.gif') no-repeat center center;
@@ -40,52 +113,42 @@ div {
 .zombie-apocalypse-screen .zombie.zombie-3 {
   background: url('../images/zombie3.gif') no-repeat center center;
 }
+.zombie-apocalypse-screen .zombie.zombie-4 {
+  background: url('../images/zombie4.gif') no-repeat center center;
+}
 .zombie-apocalypse-screen .zombie.blood-splatter-1 {
-  background: url('../images/blood_splatter_transparency_by_sagacious-d3h1yw6.png') no-repeat center center !important;
+  background: url('../images/1-blood-splatter-7-sc.png') no-repeat center center !important;
   background-size: 100% !important;
 }
 .zombie-apocalypse-screen .zombie.blood-splatter-2 {
-  background: url('../images/Blood-Splatter-psd45088.png') no-repeat center center !important;
+  background: url('../images/2-Blood-Splatter-psd45088.png') no-repeat center center !important;
   background-size: 100% !important;
 }
 .zombie-apocalypse-screen .zombie.blood-splatter-3 {
-  background: url('../images/With_Drops_of_Blood_splatter_illustration_1.png') no-repeat center center !important;
+  background: url('../images/3-Blood_Splatter_002_HDpreview.png') no-repeat center center !important;
   background-size: 100% !important;
 }
-.zombie-apocalypse-screen .weapon {
-  position: absolute;
-  bottom: 10px;
-  left: 190px;
-  background: url('../images/Weapons_V_2_by_Iskaksen.png') no-repeat;
+.zombie-apocalypse-screen .zombie.blood-splatter-4 {
+  background: url('../images/4-Blood_Splatter_004_HDpreview.png') no-repeat center center !important;
+  background-size: 100% !important;
 }
-.zombie-apocalypse-screen .weapon.pistol {
-  width: 77px;
-  height: 31px;
-  background-position: -654px -39px;
+.zombie-apocalypse-screen .zombie.blood-splatter-5 {
+  background: url('../images/5-Blood_splatter_4-sc.png') no-repeat center center !important;
+  background-size: 100% !important;
 }
-.zombie-apocalypse-screen .weapon.machine-gun {
-  width: 124px;
-  height: 41px;
-  background-position: -30px -51px;
+.zombie-apocalypse-screen .zombie.blood-splatter-6 {
+  background: url('../images/6-Blood_splatter_4-sc.png') no-repeat center center !important;
+  background-size: 100% !important;
 }
-.zombie-apocalypse-screen .health {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  font-size: 30px;
-  font-weight: bold;
-  color: #999;
+.zombie-apocalypse-screen .zombie.blood-splatter-7 {
+  background: url('../images/7-Blood_Splatter_007_HDpreview.png') no-repeat center center !important;
+  background-size: 100% !important;
 }
-.zombie-apocalypse-screen .kill-counter {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  font-size: 30px;
-  font-weight: bold;
-  color: #999;
+.zombie-apocalypse-screen .zombie.blood-splatter-8 {
+  background: url('../images/8-blood_splatter_transparency_by_sagacious-d3h1yw6.png') no-repeat center center !important;
+  background-size: 100% !important;
 }
-.zombie-apocalypse-screen .wave-indicator {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+.zombie-apocalypse-screen .zombie.blood-splatter-9 {
+  background: url('../images/9-With_Drops_of_Blood_splatter_illustration_1.png') no-repeat center center !important;
+  background-size: 100% !important;
 }

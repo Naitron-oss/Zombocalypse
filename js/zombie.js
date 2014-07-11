@@ -2,8 +2,10 @@
   "use strict";
 
   var WEAPON_PISTOL = {name:'Pistol',className:'pistol',firepower:40};
-  var WEAPON_SHOTGUN = {name:'Shotgun',className:'shotgun',firepower:90};
-  var WEAPON_MACHINE_GUN = {name:'Machine gun',className:'machine-gun',firepower:20};
+  var WEAPON_SHOTGUN = {name:'Shotgun',className:'shotgun',firepower:80};
+  var WEAPON_MACHINE_GUN = {name:'Machine gun',className:'machine-gun',firepower:30};
+  var WEAPON_RIFLE = {name:'Rifle',className:'rifle',firepower:100};
+  var WEAPON_BAZOOKA = {name:'Bazooka',className:'bazooka',firepower:100,splash:true,area:20,range:20};
 
 
 
@@ -20,7 +22,7 @@
     this.player = config.player;
     this.zIndex = config.zIndex;
     this.health = 100;
-    this.pic = this.getRandomRange(1,3);
+    this.pic = this.getRandomRange(1,4);
     this.render();
     this.bind();
     this.move();
@@ -39,12 +41,12 @@
     render: function() {
       this.element = this.doc.createElement('div');
       this.element.classList.add('zombie');
-      this.holder = this.doc.querySelector('.' + this.holder.className);
+      this.holder = this.doc.querySelector('#' + this.holder.id);
       this.holder.appendChild(this.element);
       this.element.style.left = this.getRandomRange(100, 600) + '%';
       this.element.style.zIndex = this.zIndex;
-      this.element.style.width = '8px';
-      this.element.style.height = '16px';
+      this.element.style.width = '10px';
+      this.element.style.height = '10px';
       this.element.classList.add('zombie-' + this.pic);
     },
 
@@ -86,7 +88,7 @@
 
     die: function() {
       var self = this;
-      var pic = this.getRandomRange(1,3);
+      var pic = this.getRandomRange(1,9);
       this.element.classList.add('blood-splatter-' + pic);
       clearInterval(this.interval);
       this.game.kill(this);
@@ -152,25 +154,12 @@
     render: function() {
       this.holder.classList.add('zombie-apocalypse-screen');
 
-      this.weaponElement = this.doc.createElement('div');
-      this.holder.appendChild(this.weaponElement);
-      this.weaponElement.classList.add('weapon');
-      this.weaponElement.classList.add(this.player.weapon.className);
-      this.weaponElement.onclick = this.changeWeapon.bind(this);
-
-      this.healthElement = this.doc.createElement('div');
-      this.holder.appendChild(this.healthElement);
+      this.waveIndicator = this.doc.querySelector('#info');
+      this.scene = this.doc.querySelector('#scene');
+      this.killCounter = this.doc.querySelector('#kills-count');
+      this.healthElement = this.doc.querySelector('#health');
       this.healthElement.textContent = 'Health: ' + this.player.health;
-      this.healthElement.classList.add('health');
-
-      this.killCounter = this.doc.createElement('div');
-      this.holder.appendChild(this.killCounter);
-      this.killCounter.classList.add('kill-counter');
-      this.killCounter.textContent = 'Kills: ' + this.killed;
-
-      this.waveIndicator = this.doc.createElement('div');
-      this.holder.appendChild(this.waveIndicator);
-      this.waveIndicator.classList.add('wave-indicator');
+      this.gunfire = this.doc.querySelector('#gunfire');
     },
 
     nextWave: function() {
@@ -203,7 +192,6 @@
             // .. no more zombies to create, skip
           } else {
 
-            console.log('blahdw');
             // .. draw 10 zombies then repeat after 2 minutes
 
             for (i = 0; toCreate > 0; toCreate -= 1, i += 1) {
@@ -211,7 +199,7 @@
                 break;
               }
               self.zIndex -= 1;
-              self.current.push(new Zombie({holder:self.holder, player:self.player, game:self, zIndex:self.zIndex}));
+              self.current.push(new Zombie({holder:self.scene, player:self.player, game:self, zIndex:self.zIndex}));
             }
 
           }
@@ -249,6 +237,51 @@
     },
 
     bind: function() {
+      var weapons = this.doc.querySelectorAll('.weapon');
+
+
+      function getChildren(n, skipMe){
+        var r = [];
+        var elem = null;
+        for ( ; n; n = n.nextSibling )
+          if ( n.nodeType == 1 && n != skipMe)
+            r.push( n );
+        return r;
+      }
+
+      function getSiblings(n) {
+        return getChildren(n.parentNode.firstChild, n);
+      }
+
+      for (var i = 0; i < weapons.length; i += 1) {
+        weapons[i].addEventListener('click', function() {
+
+          var siblings = getSiblings(this);
+
+          //console.log('SIBLINGS: ', siblings);
+
+          siblings.forEach(function( el ) {
+            console.info(el);
+            el.classList.remove('active');
+          });
+
+          this.classList.add('active');
+
+        }, false);
+      }
+
+      var self = this;
+      this.doc.onmousedown = function( e ) {
+        self.gunfire.style.display = 'block';
+        self.gunfire.style.top = (e.clientY - self.holder.offsetTop - 39) + 'px';
+        self.gunfire.style.left = (e.clientX - self.holder.offsetLeft - 21) + 'px';
+        setTimeout(function() {
+          self.gunfire.style.display = 'none';
+        }, 10);
+      };
+
+
+
       this.doc.onkeyup = function( event ) {
         switch (event.keyCode) {
           case 27: // "Escape"
@@ -310,8 +343,8 @@
         weapon: WEAPON_PISTOL,
         game: this
       });
-      this.bind();
       this.render();
+      this.bind();
       this.nextWave();
     }
   };
