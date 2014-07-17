@@ -59,6 +59,9 @@ div {
 .zombie-apocalypse-screen #weapons .weapon.active {
   background-color: lightgreen !important;
 }
+.zombie-apocalypse-screen #weapons .weapon.no-ammo {
+  opacity: 0.5;
+}
 .zombie-apocalypse-screen #weapons .weapon.pistol {
   width: 77px;
   height: 31px;

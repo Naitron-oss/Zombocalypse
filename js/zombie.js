@@ -1,11 +1,39 @@
 (function( global ) {
   "use strict";
 
-  var WEAPON_PISTOL = {name:'Pistol',className:'pistol',firepower:40};
-  var WEAPON_SHOTGUN = {name:'Shotgun',className:'shotgun',firepower:80};
-  var WEAPON_MACHINE_GUN = {name:'Machine gun',className:'machine-gun',firepower:30};
-  var WEAPON_RIFLE = {name:'Rifle',className:'rifle',firepower:100};
-  var WEAPON_BAZOOKA = {name:'Bazooka',className:'bazooka',firepower:100,splash:true,area:20,range:20};
+  var WEAPON_PISTOL = {
+    name:'Pistol',
+    className:'pistol',
+    firepower:40,
+    ammo:'unlimited'
+  };
+  var WEAPON_SHOTGUN = {
+    name:'Shotgun',
+    className:'shotgun',
+    firepower:80,
+    ammo: 0
+  };
+  var WEAPON_MACHINE_GUN = {
+    name:'Machine gun',
+    className:'machine-gun',
+    firepower:30,
+    ammo: 0
+  };
+  var WEAPON_RIFLE = {
+    name:'Rifle',
+    className:'rifle',
+    firepower:100,
+    ammo: 0
+  };
+  var WEAPON_BAZOOKA = {
+    name:'Bazooka',
+    className:'bazooka',
+    firepower:100,
+    splash:true,
+    area:20,
+    range:20,
+    ammo: 0
+  };
 
 
 
@@ -160,6 +188,31 @@
       this.healthElement = this.doc.querySelector('#health');
       this.healthElement.textContent = 'Health: ' + this.player.health;
       this.gunfire = this.doc.querySelector('#gunfire');
+
+      this.weapons = [
+        WEAPON_PISTOL,
+        WEAPON_SHOTGUN,
+        WEAPON_MACHINE_GUN,
+        WEAPON_RIFLE,
+        WEAPON_BAZOOKA
+      ];
+
+      this.bindWeapons();
+      this.checkWeapons();
+    },
+
+    bindWeapons: function() {
+      for (var i = 0; i < this.weapons.length; i += 1) {
+        this.doc.querySelector('.' + this.weapons[i].className).dataset['weaponID'] = i;
+      }
+    },
+
+    checkWeapons: function() {
+      for (var i = 0; i < this.weapons.length; i += 1) {
+        if (this.weapons[i].ammo === 0) {
+          this.doc.querySelector('.' + this.weapons[i].className).classList.add('no-ammo');
+        }
+      }
     },
 
     nextWave: function() {
@@ -207,13 +260,21 @@
       }
     },
 
-    changeWeapon: function() {
+    changeWeapon: function( weaponID ) {
       console.log('CHANGE WEAPON');
       var self = this;
-      this.player.weapon = WEAPON_MACHINE_GUN;
+      this.player.weapon = this.weapons[parseInt(weaponID, 10)];
       //console.log('PLAYER CHANGED WEAPON: ', this.player);
-      this.weaponElement.className = 'weapon ' + this.player.weapon.className;
-      this.doc.onmousedown = function() {
+      //this.weaponElement.className = 'weapon ' + this.player.weapon.className;
+      this.doc.onmousedown = function( e ) {
+
+        self.gunfire.style.display = 'block';
+        self.gunfire.style.top = (e.clientY - self.holder.offsetTop - 39) + 'px';
+        self.gunfire.style.left = (e.clientX - self.holder.offsetLeft - 21) + 'px';
+        setTimeout(function() {
+          self.gunfire.style.display = 'none';
+        }, 10);
+
         self.doc.onmousemove = function( e ) {
           //console.log('SHooting');
           e.target.click();
@@ -266,6 +327,11 @@
           });
 
           this.classList.add('active');
+
+          console.log('DATASET: ', this.dataset.weaponID);
+
+          self.changeWeapon(this.dataset.weaponID);
+
 
         }, false);
       }
